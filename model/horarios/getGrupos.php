@@ -1,9 +1,12 @@
 <?php 
 	include("../../controller/conexiondb.php");
 
+	$code = $_GET["materia"];
+	$code2 = $_GET["maestro"];
+	
 	$jsondata = array();
-
-	if($result = $database->query("SELECT * FROM grupos")){
+	
+	if($result = $database->query("SELECT grupo, idHorario from vclases where smateria = ".$code." and smaestro = ".$code2)){
 		if ($result -> num_rows > 0) {
 			$jsondata["code"] = 200;
 			$jsondata["msg"] = array();

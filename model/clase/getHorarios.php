@@ -3,8 +3,8 @@
 
 	$jsondata = array();
 
-	if($result = $database->query("SELECT * FROM vhorarios")){
-		if ($result -> num_rows > 0) { 
+	if($result = $database->query("SELECT * FROM vclases")){
+		if ($result -> num_rows > 0) {
 			$jsondata["code"] = 200;
 			$jsondata["msg"] = array();
 			while($row = $result->fetch_object()){

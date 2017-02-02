@@ -1,16 +1,21 @@
 <?php
 	include("../../controller/conexiondb.php");
 
-	$NoControl = $_POST["NoControl"];
+	$materia = $_POST["materia"];
+	$maestro = $_POST["maestro"];
+	$dias = $_POST["dias"];
+	$hora_ini = $_POST["hora_ini"];
+	$hora_fin = $_POST["hora_fin"];
+	$aula = $_POST["aula"];
 	$grupo = $_POST["grupo"];
 
 	$jsondata = array();
 	$respuesta = 1;
 	
-	$sql2="INSERT INTO horarios (FK_id_Alumno,FK_id_Clase,statusEncuesta) 
-	VALUES ('".$NoControl."','".$grupo."','0')";
+	$sql="INSERT INTO clase (materia, maestro, hora_ini, hora_fin, dias, aula, grupo) 
+	VALUES ('".$materia."','".$maestro."','".$hora_ini."','".$hora_fin."','".$dias."','".$aula."','".$grupo."')";
 	
-	mysqli_query($database,$sql2) or $respuesta = 0;
+	mysqli_query($database,$sql) or $respuesta = 0;
 
 	if($respuesta == 1){
 		$jsondata["code"] = 200;

@@ -6,13 +6,13 @@
 		$jsondata = array();
 		$respuesta = 1;
 
-		$sql = "DELETE FROM horarios WHERE id_horario = ".$idHorario."";
+		$sql = "DELETE FROM clase WHERE idHorario = ".$idHorario."";
 
 		mysqli_query($database,$sql) or $respuesta = 0;
 
 		if($respuesta == 1){
 		$jsondata["code"] = 200;
-		$jsondata["msg"] = "Registro eliminado correctamente";
+		$jsondata["msg"] = "Clase eliminada correctamente";
 		$jsondata["details"] = "OK";
 	}else{
 		$jsondata["code"] = 500;

@@ -1,10 +1,13 @@
 <?php 
-	include("../../controller/conexiondb.php");
 
+	include("../../controller/conexiondb.php");
+	
+
+	$code = $_GET["maestro"];
 	$jsondata = array();
 
-	if($result = $database->query("SELECT * FROM vhorarios")){
-		if ($result -> num_rows > 0) { 
+	if($result = $database->query("SELECT DISTINCT smateria, materia from vclases where smaestro = ".$code)){
+		if ($result -> num_rows > 0) {
 			$jsondata["code"] = 200;
 			$jsondata["msg"] = array();
 			while($row = $result->fetch_object()){
@@ -24,7 +27,7 @@
 
 	header('Content-type: application/json; charset=utf-8');
     header("Cache-Control: no-store");
-    echo json_encode($jsondata);
+    echo json_encode($jsondata, JSON_FORCE_OBJECT);
     $database->close();
     exit();
 ?>
