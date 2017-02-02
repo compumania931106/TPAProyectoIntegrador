@@ -1,37 +1,45 @@
-$(function(){		
-		$.ajax({
-        url: '../TPAProyectoIntegrador/model/horarios/getMaestros.php',
+$(function(){	
+	$.ajax({
+        url: '../TPAProyectoIntegrador/model/clase/getAulas.php',
         type: 'GET',
         dataType: 'json'
     }).done(function (json){
         //console.log("Codigo json: "+json.code);
         if(json.code===200)
         $.each(json.msg, function(i,row){
-			 //console.log(row.nombre_maestro);
-			$('<option></option>',{text: row.name}).attr('value',row.no_tarjeta).appendTo('#maestro'); 
-			$('<option></option>',{text: row.name}).attr('value',row.no_tarjeta).appendTo('#maestro2'); 
-			
-        });    
+            //console.log(row.id);
+           $('<option></option>',{text: row.nombreAula}).attr('value',row.id).appendTo('#aula'); 
+		   $('<option></option>',{text: row.nombreAula}).attr('value',row.id).appendTo('#aula2'); 
+        });
     });
 	
 	$.ajax({
-        url: '../TPAProyectoIntegrador/model/horarios/getAlumnos.php',
+        url: '../TPAProyectoIntegrador/model/clase/getMaestros.php',
         type: 'GET',
         dataType: 'json'
     }).done(function (json){
+        //console.log("Codigo json: "+json.code);
         if(json.code===200)
         $.each(json.msg, function(i,row){
-			$('<option></option>',{text: row.no_control}).attr('value',row.no_control).appendTo('#NoControl'); 
-			$('<option></option>',{text: row.no_control}).attr('value',row.no_control).appendTo('#NoControl2'); 
-
-        });    		
-		$("#NoControl").editableSelect(); 
+            //console.log(row.name);
+           $('<option></option>',{text: row.name}).attr('value',row.no_tarjeta).appendTo('#maestro'); 
+		   $('<option></option>',{text: row.name}).attr('value',row.no_tarjeta).appendTo('#maestro2'); 
+        });
     });
-
-	$("#maestro").change(function(){dependencia_materia();});
-	$("#materia").change(function(){dependencia_grupo();});
-	$("#materia").attr("disabled",true);
-	$("#grupo").attr("disabled",true);	
+	
+	$.ajax({
+        url: '../TPAProyectoIntegrador/model/clase/getMaterias.php',
+        type: 'GET',
+        dataType: 'json'
+    }).done(function (json){
+        //console.log("Codigo json: "+json.code);
+        if(json.code===200)
+        $.each(json.msg, function(i,row){
+            //console.log(row.nombre);
+           $('<option></option>',{text: row.nombre_completo}).attr('value',row.materiaid).appendTo('#materia'); 
+		   $('<option></option>',{text: row.nombre_completo}).attr('value',row.materiaid).appendTo('#materia2'); 
+        });
+    });
 	
 	$('#frmHorarios').validate({
        rules:{
@@ -115,42 +123,55 @@ $(function(){
             url:"http://cdn.datatables.net/plug-ins/1.10.12/i18n/Spanish.json"
         },
         ajax:{
-          url:"../TPAProyectoIntegrador/model/horarios/getHorarios.php"  ,
-          dataSrc:function(json){              		  				  
+          url:"../TPAProyectoIntegrador/model/clase/getHorarios.php"  ,
+          dataSrc:function(json){
+              
               return json['msg'];
           }
         },
         columns:[
             {
-           		data:"NoControl"
-            },
-			{
-           		data:"maestro"
+           		data:"materia"
             },
             {
-            	data:"materia"   
-            },            
+            	data:"maestro"   
+            },
+            {
+                data:"dias"
+            },
+            {
+               data:"hora_ini"
+            },
 			{
-               data:"grupo"
+               data:"hora_fin"
             },
 			{
                data:"aula"
             },
+			{
+               data:"grupo"
+            },
             {
             	data: function(row){
                   str="<div align='center'>";
-                  str+="<button id='btnBorrar' class='btn btn-danger btn-xs' onclick='deleteHorario("+row["idhorario"]+")'><i class='glyphicon glyphicon-trash'></i></button>";
-                  str+= "&nbsp;<button id='btnEditar' class = 'btn btn-success btn-xs' onClick ='editHorario("+row['idhorario']
-				  + ",\"" + row['NoControl']
-                  + "\",\"" +row['maestro']
-				  + "\",\"" + row['materia']
-				  + "\",\"" + row['grupo']
+                  str+="<button id='btnBorrar' class='btn btn-danger btn-xs' onclick='deleteHorario("+row["idHorario"]+")'><i class='glyphicon glyphicon-trash'></i></button>";
+                  str+= "&nbsp;<button id='btnEditar' class = 'btn btn-success btn-xs' onClick ='editHorario("+row['idHorario']
+				  + ",\"" + row['smateria']
+                  + "\",\"" +row['smaestro']
+				  + "\",\"" + row['hora_ini']
+				  + "\",\"" + row['hora_fin']
+ 				  + "\",\"" + row['grupo']
+				  + "\",\"" + row['saula']				  
+				  + "\",\"" + row['dias']
 				  +"\")'><i class='glyphicon glyphicon-edit'></i></button>";
                   str+="<div>";
                   return str;
               }  
             }
-        ]            
+
+        ]
+            
+        
     });
 	
 	$('#frmEditHorario').validate({
@@ -207,13 +228,15 @@ $(function(){
 });
 
 function newHorario(){
-	console.log($("#grupo").val());
     $.ajax({
-        url: "../TPAProyectoIntegrador/model/horarios/newHorario.php",
+        url: "../TPAProyectoIntegrador/model/clase/newHorario.php",
         type: "post",
-        data: {NoControl : $('#NoControl').val(),
+        data: {materia : $('#materia').val(),
                maestro : $('#maestro').val(),
-               materia: $('#materia').val(),
+               hora_ini: $('#hora_ini').val(),
+               hora_fin: $('#hora_fin').val(),
+               dias: $('#dias').val(),
+               aula: $('#aula').val(),
                grupo: $('#grupo').val()
 			   }
     }).done(
@@ -244,8 +267,8 @@ function newHorario(){
 
 function deleteHorario(idHorario){
     bootbox.confirm({
-        title: "Eliminar Horario",
-        message: "¿Estas seguro que quieres eliminar este horario?",
+        title: "Eliminar Clase",
+        message: "¿Estas seguro que quieres eliminar esta Clase?",
         buttons: {
             cancel: {
                 label: '<i class="fa fa-times"></i> Cancelar'
@@ -256,7 +279,7 @@ function deleteHorario(idHorario){
         },callback: function (result) {
             if (result === true) {
                 $.ajax({
-                    url: "../TPAProyectoIntegrador/model/horarios/deleteHorarios.php",
+                    url: "../TPAProyectoIntegrador/model/clase/deleteHorarios.php",
                     type: "post",
                     data: {idHorario: idHorario}
                 }).done(function (data) {
@@ -284,17 +307,21 @@ function deleteHorario(idHorario){
 }
 
 
-function editHorario(NoControl2,smateria2,smaestro2,sgrupo2){
-	 $('#Nocontrol2').val(NoControl2);
+function editHorario(idHorario2,smateria2,smaestro2,hora_ini2,hora_fin2,sgrupo2,saula2,dias2){
+	 $('#idHorario2').val(idHorario2);
 	 $('#materia2').val(parseInt(smateria2));
 	 $('#maestro2').val(parseInt(smaestro2));
+	 $('#hora_ini2').val(hora_ini2);
+ 	 $('#hora_fin2').val(hora_fin2);
 	 $('#grupo2').val(parseInt(sgrupo2));
+	 $('#aula2').val(parseInt(saula2));
+  	 $('#dias2').val(parseInt(dias2));
 	 $("#modalHorario").modal("show");
 }
 
 function updateHorario(){
     $.ajax({
-  		url: "../TPAProyectoIntegrador/model/horarios/updateHorario.php",
+  		url: "../TPAProyectoIntegrador/model/clase/updateHorario.php",
 		type: "post",
 		data:  $('#frmEditHorario').serialize()
 	}).done(
@@ -313,51 +340,4 @@ function updateHorario(){
 		  $.growl.error({ message: "Error en la modificacion" });
 		}
 	);
-}
-
-function dependencia_materia(){
-	$("#materia").attr("disabled",false);
-	$("#grupo").attr("disabled",true);
-	
-	$("#materia").empty();	
-	$('<option></option>',{text: "Selecciona una materia"}).attr('value',"").attr('disabled',"disabled").attr('selected',"selected").appendTo('#materia');
-	 
-	$("#grupo").empty();
-	$('<option></option>',{text: "Selecciona el grupo"}).attr('value',"").attr('disabled',"disabled").attr('selected',"selected").appendTo('#grupo'); 
-	
-	$.ajax({
-        url: '../TPAProyectoIntegrador/model/horarios/getMaterias.php',
-		data: $('#frmHorarios').serialize(),		
-        type: 'GET',
-        dataType: 'json'
-    }).done(function (json){
-        //console.log("Codigo json: "+json.code);
-        if(json.code===200)
-        $.each(json.msg, function(i,row){
-            //console.log(row.nombre);
-           $('<option></option>',{text: row.materia}).attr('value',row.smateria).appendTo('#materia'); 
-		   $('<option></option>',{text: row.materia}).attr('value',row.smateria).appendTo('#materia2'); 
-        });
-    });		
-}
-
-function dependencia_grupo(){
-	$("#grupo").attr("disabled",false);
-	$("#grupo").empty();
-	$('<option></option>',{text: "Selecciona una materia"}).attr('value',"").attr('disabled',"disabled").attr('selected',"selected").appendTo('#grupo'); 
-	$.ajax({
-        url: '../TPAProyectoIntegrador/model/horarios/getGrupos.php',
-		data: $('#frmHorarios').serialize(),		
-        type: 'GET',
-        dataType: 'json'
-    }).done(function (json){
-        //console.log("Codigo json: "+json.code);
-        if(json.code===200)
-        $.each(json.msg, function(i,row){
-            //console.log(row.nombre_grupo);
-           $('<option></option>',{text: row.grupo}).attr('value',row.idHorario).appendTo('#grupo'); 
-           $('<option></option>',{text: row.grupo}).attr('value',row.idHorario).appendTo('#grupo2'); 
-        });
-    });	
-	
 }
