@@ -49,6 +49,9 @@
     <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
 	<link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" type="text/css" href="../TPAProyectoIntegrador/css/jquery-editable-select.min.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jqueryscript.net/css/jquerysctipttop.css">
 
 </head>
 <body>
