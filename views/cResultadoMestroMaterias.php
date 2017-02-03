@@ -1,5 +1,7 @@
 <script type="text/javascript" src="js/cResultadoMestroMaterias.js"></script>
 
+<script type="text/javascript" src="js/cgraficamaestromateria.js"></script>
+
 <div class="row">&nbsp;</div>
 
 <div class="row">
@@ -9,9 +11,14 @@
                 <tr>
                     <th>Maestro</th>
                     <th>Materias</th>
+                    <th>Aula</th>
+                    <th>Grupo</th>
+                    <th>Hora</th>
                 </tr>
             </thead>
         </table>
-    </div>
+    </div>  
 </div>
-
+<div class="row">
+    <div id="barras" style="width:100%; height:400px;"></div>
+</div>

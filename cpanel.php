@@ -28,12 +28,15 @@
 	<script type="text/javascript" src="js/plugins/sweetalert.min.js"></script>
     <script type="text/javascript" src="js/plugins/bootstrap-switch.min.js"></script>
 	<script type="text/javascript" src="js/plugins/bootbox.min.js"></script>
-    <script type="text/javascript" src="js/plugins/jszip.min.js"></script>
+    <script type="text/javascript" src="plugins/jszip.min.js"></script>
 <script type="text/javascript" src="js/plugins/pdfmake.min.js"></script>
 <script type="text/javascript" src="js/plugins/buttons.html5.min.js"></script>
 <script type="text/javascript" src="js/plugins/vfs_fonts.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
 	<script type="text/javascript" src="js/cpanel.js"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/tether.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css">

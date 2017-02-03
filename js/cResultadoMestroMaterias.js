@@ -17,6 +17,15 @@ $(function(){
             },
             {
                 data:"nombre_completo"
+            },
+            {
+                data:"aula"
+            },
+            {
+                data:"grupo"
+            },
+            {
+                data:"hora_ini"
             }
         ]
             
