@@ -6,9 +6,12 @@ $(function () {
         type: 'GET',
         dataType: 'JSON'
     }).done(function (json) {
-        $.each($.parseJSON(json.msg), function (i, row) {
-            json_grafica.push([row.maestro, row.materias]);
-        });//ajax
+       $.each(json.msg, function(i, row) {
+         json_grafica.push([row.name,Number(row.y)]);
+        
+    });
+       console.log(json_grafica);
+       console.log(json);
         graficar(json_grafica);
     });
 });//function
@@ -25,7 +28,7 @@ function graficar(json){
             text: 'Cantidad de materias impartidas por maestro'
         },
         tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            pointFormat: '{series.name}: {point.y} (<b>{point.percentage:.1f})%</b>'
         },
         plotOptions: {
             pie: {
@@ -33,7 +36,7 @@ function graficar(json){
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    format: '<b>{point.name}</b>: {point.y}',
                     style: {
                         color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                     }

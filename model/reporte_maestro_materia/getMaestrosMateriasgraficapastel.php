@@ -3,7 +3,7 @@
 
 	$jsondata = array();
 
-	if($result = $database->query("SELECT usuario.usuarioname as maestro, count(*) as materias FROM usuario INNER JOIN clase on usuario.usuarioid = clase.maestro GROUP BY clase.maestro HAVING count(*) > 0 ")){
+	if($result = $database->query("SELECT usuario.usuarioname as name, count(*) as y FROM usuario INNER JOIN clase on usuario.usuarioid = clase.maestro GROUP BY clase.maestro HAVING count(*) > 0 ")){
 		if ($result -> num_rows > 0) {
 			$jsondata["code"] = 200;
 			$jsondata["msg"] = array();
